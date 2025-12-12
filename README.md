@@ -42,13 +42,15 @@ The pipeline consists of four main stages:
 Create a virtual environment and install the dependencies:
 
 ```bash
-pip install pyspark kafka-python-ng websockets textblob influxdb-client python-dotenv
+pip install pyspark textblob python-dotenv
+pip install kafka-python influxdb-client python-dotenv
 ```
 
 ### 2. Configuration (`.env`)
 Create a `.env` file in the root directory. This keeps your credentials safe.
 
 ```ini
+# Kafka
 # Kafka
 KAFKA_BOOTSTRAP_SERVERS=localhost:9092
 KAFKA_TOPIC=twitterdata
@@ -105,7 +107,7 @@ python extract_bluesky_to_kafka.py
 Reads from Kafka, applies sentiment analysis, and writes back to Kafka.
 *Note: The script automatically handles the `spark-sql-kafka` package.*
 ```bash
-python process_spark_streaming.py
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 process_spark_streaming.py
 ```
 
 **Step 3: Start the Loader (Storage)**
