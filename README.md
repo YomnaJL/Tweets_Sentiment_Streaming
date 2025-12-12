@@ -130,6 +130,23 @@ python load_kafka_to_influxdb.py
 
 ---
 
+## 📸 Project Demo & Outputs
+
+Here is the pipeline in action:
+
+### 1. Data Ingestion (Terminal)
+The Python Producer filters for posts and pushes them to Kafka.
+![Producer Output](docs/terminal_output.png)
+
+### 2. InfluxDB Storage (Table View)
+Processed sentiment data (polarity and subjectivity) stored in the database.
+![InfluxDB Table](docs/influx_table.png)
+
+### 3. Real-Time Visualization (Influx Data Explorer)
+Scatter plot showing sentiment distribution over time.
+![Sentiment Visualization](docs/influx_graph.png)
+
+---
 
 ## 🧠 Technical Concepts (The "Why")
 
