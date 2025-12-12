@@ -147,6 +147,7 @@ Processed sentiment data (polarity and subjectivity) stored in the database.
 
 ### 4.Real-Time Grafana Dashboard (Video Demo)
 The video below demonstrates the live data flow, showing the sentiment analysis updating in real-time on the Grafana Dashboard.
+
 [▶️ Click here to watch the Grafana Dashboard Demo](docs/1212.mp4)
 
 
