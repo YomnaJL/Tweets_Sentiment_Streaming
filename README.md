@@ -143,12 +143,11 @@ Processed sentiment data (polarity and subjectivity) stored in the database.
 ![InfluxDB Table](docs/influx_table.png)
 
 ### 3. Real-Time Visualization InfluxDB (Video Demo)
-Scatter plot showing sentiment distribution over time.
-![Sentiment Visualization](docs/grafana.webm)
+[▶️ Click here to watch the InfluxDB Visualization Demo](docs/grafana.webm)
 
 ### 4.Real-Time Grafana Dashboard (Video Demo)
 The video below demonstrates the live data flow, showing the sentiment analysis updating in real-time on the Grafana Dashboard.
-![alt text](docs/demo.gif)
+[▶️ Click here to watch the Grafana Dashboard Demo](docs/influxdb.mp4)
 
 
 ---
