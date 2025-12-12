@@ -142,9 +142,14 @@ The Python Producer filters for posts and pushes them to Kafka.
 Processed sentiment data (polarity and subjectivity) stored in the database.
 ![InfluxDB Table](docs/influx_table.png)
 
-### 3. Real-Time Visualization (Influx Data Explorer)
+### 3. Real-Time Visualization InfluxDB (Video Demo)
 Scatter plot showing sentiment distribution over time.
 ![Sentiment Visualization](docs/influx_graph.png)
+
+### 4.Real-Time Grafana Dashboard (Video Demo)
+The video below demonstrates the live data flow, showing the sentiment analysis updating in real-time on the Grafana Dashboard.
+![alt text](docs/demo.gif)
+
 
 ---
 
