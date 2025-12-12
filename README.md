@@ -174,9 +174,6 @@ Exploring the raw tweets and performing full-text search.
 *(Screenshot of Kibana Discover tab showing `twitter_dataset`)*
 ![Kibana Dashboard](docs/kibana_dashboard.png)
 
-## 🧠 Technical Concepts (The "Why")
-
-This project was built to explore specific engineering concepts:
 
 ### ⚡ Why is Kafka so fast?
 ## 🧠 Technical Concepts
