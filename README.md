@@ -1,8 +1,4 @@
-This is a significant improvement! You have pivoted from **Twitter (Tweepy)** to **Bluesky (Jetstream)**, which is modern and free, while keeping the core logic of Kafka and Spark.
 
-Here is a professional, well-structured **README.md** in English. I have aligned the instructions with your specific code (Bluesky -> Kafka -> Spark -> InfluxDB) and integrated your theoretical notes into a dedicated "Technical Concepts" section.
-
-***
 
 # 🏀 Bluesky NBA Real-Time Sentiment Analysis
 
