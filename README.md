@@ -116,10 +116,18 @@ python load_kafka_to_influxdb.py
 
 **Step 4: Visualize**
 1.  Open Grafana (`http://localhost:3000`).
-2.  Add InfluxDB as a Data Source.
+2.  Add InfluxDB as a Data Source (Flux language).
 3.  Create a dashboard to query the measurement `bluesky_post`.
+4.  Example query to count "Positive" butterflies:
+    ```flux
+    from(bucket: "YOUR_BUCKET") 
+      |> range(start: -1h) 
+      |> filter(fn: (r) => r["_measurement"] == "bluesky_post")
+      |> filter(fn: (r) => r["polarity_cat"] == "Positive")
+    ```
 
 ---
+
 
 ## 🧠 Technical Concepts (The "Why")
 
