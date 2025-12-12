@@ -187,7 +187,7 @@ Kafka acts as the central nervous system, decoupling the ingestion (Bluesky) fro
 
 
 ### ⚡ 🏗 Kafka Internal Architecture
-![plot](docs/kafka.png)
+![plot](docs/architecture_nv.png)
 
 ### 🌊 Handling Late Data (Watermarking)
 In streaming, "Event Time" (when the post was written) differs from "Processing Time" (when Spark receives it).
