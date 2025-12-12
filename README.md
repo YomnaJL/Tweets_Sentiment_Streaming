@@ -175,7 +175,6 @@ Exploring the raw tweets and performing full-text search.
 ![Kibana Dashboard](docs/kibana_dashboard.png)
 
 
-### ⚡ Why is Kafka so fast?
 ## 🧠 Technical Concepts
 
 ### 🏗 Architecture Decision: Why Two Databases?
