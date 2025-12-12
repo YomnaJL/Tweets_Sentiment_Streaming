@@ -26,8 +26,8 @@ The pipeline consists of four main stages:
 *   **Language:** Python 3.8+
 *   **Streaming Platform:** Apache Kafka & Zookeeper
 *   **Processing Engine:** Apache Spark (PySpark 3.5.x)
-*   **Database:** InfluxDB (Time Series)
-*   **Visualization:** Grafana
+*   **Database:** InfluxDB (Time Series) & Elasticsearch (NoSQL/Search)
+*   **Visualization:** Grafana & Kibana
 *   **Libraries:** `websockets`, `kafka-python`, `textblob`, `influxdb-client`
 
 ### Prerequisites
@@ -43,46 +43,65 @@ Create a virtual environment and install the dependencies:
 
 ```bash
 pip install pyspark textblob python-dotenv
-pip install kafka-python influxdb-client python-dotenv
+pip install kafka-python influxdb-client elasticsearch python-dotenv
 ```
 
 ### 2. Configuration (`.env`)
 Create a `.env` file in the root directory. This keeps your credentials safe.
 
 ```ini
-# Kafka
-# Kafka
+# --- KAFKA ---
 KAFKA_BOOTSTRAP_SERVERS=localhost:9092
 KAFKA_TOPIC=twitterdata
 KAFKA_OUTPUT_TOPIC=twitterdata-clean
-KAFKA_GROUP_ID=bluesky-influx-group
+KAFKA_GROUP_ID=bluesky-group
 
-# Spark
+# --- SPARK ---
 SPARK_APP_NAME=BlueskySentimentAnalysis
 SPARK_CHECKPOINT_DIR=/tmp/spark-checkpoint
 
-# InfluxDB
+# --- INFLUXDB ---
 INFLUXDB_URL=http://localhost:8086
-influxdb_token=YOUR_INFLUX_TOKEN_HERE
-influxdb_org=YOUR_ORG_NAME
-influxdb_bucket=YOUR_BUCKET_NAME
+INFLUXDB_TOKEN=YOUR_INFLUX_TOKEN_HERE
+INFLUXDB_ORG=YOUR_ORG_NAME
+INFLUXDB_BUCKET=YOUR_BUCKET_NAME
+
+# --- ELASTICSEARCH ---
+ELASTICSEARCH_HOST=https://localhost:9200
+ELASTICSEARCH_USER=elastic
+ELASTICSEARCH_PASSWORD=YOUR_GENERATED_PASSWORD
+ELASTICSEARCH_INDEX=twitter_dataset
 ```
 
 ### 3. Start Infrastructure
-You need to start Zookeeper, Kafka, and InfluxDB.
 
-**Option A: Using Terminal (Local Install)**
+#### A. Kafka & Zookeeper (Terminal 1 & 2)
 ```bash
-# 1. Start Zookeeper
 bin/zookeeper-server-start.sh config/zookeeper.properties
-
-# 2. Start Kafka
 bin/kafka-server-start.sh config/server.properties
-
-# 3. Create Topics
-bin/kafka-topics.sh --create --topic twitterdata --bootstrap-server localhost:9092
-bin/kafka-topics.sh --create --topic twitterdata-clean --bootstrap-server localhost:9092
 ```
+
+#### B. Elasticsearch & Kibana (Windows Example)
+1.  **Start Elasticsearch:**
+    ```cmd
+    cd C:\Elastic\elasticsearch-8.x\bin
+    .\elasticsearch.bat
+    ```
+    *Note the generated password for the `elastic` user.*
+
+2.  **Start Kibana:**
+    ```cmd
+    cd C:\Elastic\kibana-8.x\bin
+    .\kibana.bat
+    ```
+
+3.  **Link Kibana:**
+    *   Generate enrollment token: `elasticsearch-create-enrollment-token.bat -s kibana`
+    *   Open `http://localhost:5601` and enter the token.
+
+4.  **Setup Index Pattern:**
+    *   Go to **Stack Management > Data Views**.
+    *   Create a data view for index: `twitter_dataset`.
 
 **Option B: Start InfluxDB & Grafana**
 ```bash
@@ -150,19 +169,25 @@ The video below demonstrates the live data flow, showing the sentiment analysis 
 
 [▶️ Click here to watch the Grafana Dashboard Demo](docs/1212.mp4)
 
-
----
+### 5. Search & Analytics (Kibana & Elasticsearch)
+Exploring the raw tweets and performing full-text search.
+*(Screenshot of Kibana Discover tab showing `twitter_dataset`)*
+![Kibana Dashboard](docs/kibana_dashboard.png)
 
 ## 🧠 Technical Concepts (The "Why")
 
 This project was built to explore specific engineering concepts:
 
 ### ⚡ Why is Kafka so fast?
-Kafka is optimized for high throughput and low latency I/O.
-1.  **Sequential I/O:** Kafka avoids random disk access (which is slow). It treats data as a "Log" (append-only structure). Writing to the end of a file sequentially is nearly as fast as writing to RAM.
-2.  **Zero Copy Principle:**
-    *   *Traditional:* Data is copied from Disk → Kernel → Application → Kernel → Network (4 copies).
-    *   *Kafka:* Uses the `sendfile` system call to transfer data directly from Disk Cache to Network Socket, bypassing the application context entirely. This reduces CPU cycles and memory usage.
+## 🧠 Technical Concepts
+
+### 🏗 Architecture Decision: Why Two Databases?
+*   **InfluxDB:** Optimized for **Time Series**. It handles high write loads and is perfect for mathematical aggregations over time (e.g., "Average sentiment per minute").
+*   **Elasticsearch:** Optimized for **Search**. It allows us to find specific tweets (e.g., "Find all negative tweets about 'Monarch'").
+
+### ⚡ Kafka Speed & Architecture
+Kafka acts as the central nervous system, decoupling the ingestion (Bluesky) from the processing (Spark) and the storage (Elastic/Influx). This ensures that if the database loader crashes, no data is lost; it remains buffered in Kafka.
+
 
 ### ⚡ 🏗 Kafka Internal Architecture
 ![plot](docs/kafka.png)
